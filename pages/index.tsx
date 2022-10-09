@@ -1,7 +1,26 @@
 import Head from 'next/head';
 import { links } from '../data/links';
+import { gql, useQuery } from '@apollo/client';
+
+const ALL_LINKS_QUERY = gql`
+	query {
+		links {
+			id
+			title
+			url
+			description
+			imageUrl
+			category
+		}
+	}
+`;
 
 export default function Home() {
+	const { data, loading, error } = useQuery(ALL_LINKS_QUERY);
+
+	if (loading) return <p>Loading...</p>;
+	if (error) return <p>Oh no... {error.message}</p>;
+
 	return (
 		<div>
 			<Head>
